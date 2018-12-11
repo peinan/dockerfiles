@@ -16,6 +16,12 @@ RUN apt-get update -y \
         libncursesw5-dev \
         libsqlite3-dev \
         libappindicator1 \
+        fonts-liberation \
+        libasound2 \
+        libnspr4 \
+        libnss3 \
+        lsb-release \
+        xdg-utils \
         zlib1g-dev \
         zip \
         unzip \
