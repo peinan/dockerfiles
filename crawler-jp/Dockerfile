@@ -17,6 +17,8 @@ RUN apt-get update -y \
         libsqlite3-dev \
         libappindicator1 \
         zlib1g-dev \
+        zip \
+        unzip \
         gcc \
         locales \
         tk-dev \
