@@ -55,7 +55,8 @@ RUN wget https://chromedriver.storage.googleapis.com/${cdver}/chromedriver_linux
     && touch /etc/default/google-chrome \
     && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt-get install -f \
-    && dpkg -i google-chrome-stable_current_amd64.deb
+    && dpkg -i google-chrome-stable_current_amd64.deb \
+    && rm -rf google-chrome-stable_current_amd64.deb
 
 # python3.6 のインストール
 ARG pyver="3.6.7"
@@ -64,7 +65,7 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && cd Python-${pyver} \
     && ./configure \
     && make altinstall \
-    && rm -rf Python-${pyver} Python-${pyver}.tgz \
+    && rm -rf /Python-${pyver} /Python-${pyver}.tgz \
     && ln -s /usr/local/bin/python3.6 /usr/local/bin/python \
     && ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
 
