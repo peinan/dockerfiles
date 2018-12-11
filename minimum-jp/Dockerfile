@@ -26,7 +26,7 @@ RUN apt-get update -y \
         wget \
         curl \
         xz-utils \
-        file
+        file \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -44,7 +44,7 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && cd Python-${pyver} \
     && ./configure \
     && make altinstall \
-    && rm -rf Python-${pyver} Python-${pyver}.tgz \
+    && rm -rf /Python-${pyver} /Python-${pyver}.tgz \
     && ln -s /usr/local/bin/python3.6 /usr/local/bin/python \
     && ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
 
