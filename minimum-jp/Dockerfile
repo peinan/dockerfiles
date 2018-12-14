@@ -15,16 +15,7 @@ RUN apt-get update -y \
         libreadline-gplv2-dev \
         libncursesw5-dev \
         libsqlite3-dev \
-        libappindicator1 \
-        fonts-liberation \
-        libasound2 \
-        libnspr4 \
-        libnss3 \
-        lsb-release \
-        xdg-utils \
         zlib1g-dev \
-        zip \
-        unzip \
         gcc \
         locales \
         tk-dev \
@@ -46,18 +37,6 @@ ENV LANG=ja_JP.UTF-8 \
     LC_ALL=ja_JP.UTF-8 \
     TZ="Asia/Tokyo"
 
-# install chromedriver for selenium
-ARG cdver="2.45"
-RUN wget https://chromedriver.storage.googleapis.com/${cdver}/chromedriver_linux64.zip \
-    && unzip chromedriver_linux64.zip \
-    && mv chromedriver /usr/local/bin/ \
-    && rm -rf chromedriver_linux64.zip \
-    && touch /etc/default/google-chrome \
-    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && apt-get install -f \
-    && dpkg -i google-chrome-stable_current_amd64.deb \
-    && rm -rf google-chrome-stable_current_amd64.deb
-
 # python3.6 のインストール
 ARG pyver="3.6.7"
 RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
@@ -72,4 +51,4 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 ENV PYTHONIOENCODING="utf-8"
 
 RUN pip install -U pip \
-    && pip install setuptools numpy ipython requests requests_html Flask gunicorn tqdm selenium
+    && pip install setuptools numpy ipython requests requests_html Flask gunicorn tqdm
