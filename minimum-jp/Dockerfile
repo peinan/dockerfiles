@@ -32,9 +32,9 @@ RUN apt-get update -y \
 
 # 文字化け対策の locale 設定
 RUN echo "ja_JP UTF-8" > /etc/locale.gen && locale-gen
-ENV LANG ja_JP.UTF-8 \
-    LANGUAGE ja_JP:ja \
-    LC_ALL ja_JP.UTF-8 \
+ENV LANG=ja_JP.UTF-8 \
+    LANGUAGE=ja_JP:ja \
+    LC_ALL=ja_JP.UTF-8 \
     TZ="Asia/Tokyo"
 
 # python3.6 のインストール
@@ -48,7 +48,7 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && ln -s /usr/local/bin/python3.6 /usr/local/bin/python \
     && ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
 
-ENV PYTHONIOENCODING "utf-8"
+ENV PYTHONIOENCODING="utf-8"
 
 RUN pip install -U pip \
     && pip install setuptools numpy ipython requests requests_html Flask gunicorn tqdm
