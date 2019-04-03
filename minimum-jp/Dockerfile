@@ -1,5 +1,3 @@
-# stable version
-
 FROM ubuntu:16.04
 
 MAINTAINER Peinan
@@ -38,7 +36,7 @@ ENV LANG=ja_JP.UTF-8 \
     TZ="Asia/Tokyo"
 
 # python3.6 のインストール
-ARG pyver="3.6.7"
+ARG pyver="3.6.8"
 RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
@@ -50,5 +48,4 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING="utf-8"
 
-RUN pip install -U pip \
-    && pip install setuptools numpy ipython requests requests_html Flask gunicorn tqdm
+RUN pip install -U pip setuptools && pip install -r minimum-jp/requirements.txt
