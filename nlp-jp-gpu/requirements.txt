@@ -1,0 +1,36 @@
+# general packages
+pip
+setuptools
+
+# scientific computation
+numpy
+scipy
+scikit-learn
+lightgbm
+tensorflow-gpu
+
+# NLP
+gensim
+mojimoji
+spacy
+nltk
+mecab-python3
+
+# data analysis
+pandas
+matplotlib
+
+# web servers
+Flask
+fastapi
+gunicorn
+uvicorn
+
+# utility tools
+ipython
+jupyter
+jupyterlab
+requests
+requests_html
+tqdm
+git+https://github.com/peinan/peinan-utils-py
