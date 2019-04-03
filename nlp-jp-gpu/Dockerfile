@@ -1,5 +1,6 @@
 # stable version
 
+# ensure the cuda image version are same with the cuda driver version
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
 
 MAINTAINER Peinan
@@ -27,7 +28,7 @@ RUN apt-get update -y \
         libsqlite3-dev \
         zlib1g-dev \
         ca-certificates \
-        software-properties \
+        software-properties-common \
         locales \
         tk-dev \
         xz-utils \
@@ -52,7 +53,7 @@ RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp
     && rm -rf /tmp/neologd
 
 # python3.6 のインストール
-ARG pyver="3.6.7"
+ARG pyver="3.6.8"
 RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
@@ -64,11 +65,13 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING "utf-8"
 
-RUN pip install -U pip \
-    && pip install numpy scikit-learn pandas jupyter jupyterlab ipython requests requests_html \
-       Flask gensim gunicorn mojimoji matplotlib falcon mecab-python3 tqdm
+ADD ./requirements.txt /tmp
+RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
 
-RUN pip install https://download.pytorch.org/whl/cu100/torch-1.0.0-cp36-cp36m-linux_x86_64.whl \
-    torchvision
+# install PyTorch
+ARG pytorch_url="https://download.pytorch.org/whl/cu100/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.whl"
+RUN pip install ${pytorch_url} torchvision torchtext
 
 RUN ldconfig
+
+# don't forget adding option `--runtime=nvidia` while running this image
