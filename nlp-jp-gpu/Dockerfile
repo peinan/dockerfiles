@@ -1,4 +1,5 @@
-FROM ubuntu:16.04
+# ensure the cuda image version are same with the cuda driver version
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
 
 MAINTAINER Peinan
 
@@ -39,9 +40,9 @@ RUN apt-get update -y \
 
 # 文字化け対策の locale 設定
 RUN echo "ja_JP UTF-8" > /etc/locale.gen && locale-gen
-ENV LANG=ja_JP.UTF-8 \
-    LANGUAGE=ja_JP:ja \
-    LC_ALL=ja_JP.UTF-8 \
+ENV LANG ja_JP.UTF-8 \
+    LANGUAGE ja_JP:ja \
+    LC_ALL ja_JP.UTF-8 \
     TZ="Asia/Tokyo"
 
 # neologd のインストール
@@ -60,12 +61,15 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && ln -s /usr/local/bin/python3.6 /usr/local/bin/python \
     && ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
 
-ENV PYTHONIOENCODING="utf-8"
+ENV PYTHONIOENCODING "utf-8"
 
-COPY nlp-jp/requirements.txt /tmp/
+COPY nlp-jp-gpu/requirements.txt /tmp/
 RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
 
 # install PyTorch
-ARG pytorch_url="https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.whl"
+ARG pytorch_url="https://download.pytorch.org/whl/cu100/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.whl"
 RUN pip install ${pytorch_url} torchvision torchtext
 
+RUN ldconfig
+
+# don't forget adding option `--runtime=nvidia` while running this image

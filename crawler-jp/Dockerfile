@@ -1,5 +1,3 @@
-# stable version
-
 FROM ubuntu:16.04
 
 MAINTAINER Peinan
@@ -47,7 +45,9 @@ ENV LANG=ja_JP.UTF-8 \
     TZ="Asia/Tokyo"
 
 # install chromedriver for selenium
-ARG cdver="2.45"
+# NOTE: check the chromedriver version are the latest at 
+#       https://sites.google.com/a/chromium.org/chromedriver/downloads
+ARG cdver="73.0.3683.68"
 RUN wget https://chromedriver.storage.googleapis.com/${cdver}/chromedriver_linux64.zip \
     && unzip chromedriver_linux64.zip \
     && mv chromedriver /usr/local/bin/ \
@@ -59,7 +59,7 @@ RUN wget https://chromedriver.storage.googleapis.com/${cdver}/chromedriver_linux
     && rm -rf google-chrome-stable_current_amd64.deb
 
 # python3.6 のインストール
-ARG pyver="3.6.7"
+ARG pyver="3.6.8"
 RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
@@ -71,5 +71,5 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING="utf-8"
 
-RUN pip install -U pip \
-    && pip install setuptools numpy ipython requests requests_html Flask gunicorn tqdm selenium
+RUN pip install -U pip setuptools && pip install -r crawler-jp/requirements.txt
+
