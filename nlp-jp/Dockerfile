@@ -1,12 +1,20 @@
-# stable version
-
 FROM ubuntu:16.04
 
 MAINTAINER Peinan
 
 # 必要なパッケージインストール
 RUN apt-get update -y \
-    && apt-get install -y \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
+        sudo \
+        git \
+        wget \
+        curl \
+        make \
+        cmake \
+        vim \
+        gcc \
+        g++ \
         build-essential \
         libgdbm-dev \
         libc6-dev \
@@ -16,15 +24,10 @@ RUN apt-get update -y \
         libncursesw5-dev \
         libsqlite3-dev \
         zlib1g-dev \
-        gcc \
+        ca-certificates \
+        software-properties-common \
         locales \
         tk-dev \
-        git \
-        sudo \
-        vim \
-        make \
-        wget \
-        curl \
         xz-utils \
         file \
         swig \
@@ -47,7 +50,7 @@ RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp
     && rm -rf /tmp/neologd
 
 # python3.6 のインストール
-ARG pyver="3.6.7"
+ARG pyver="3.6.8"
 RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
@@ -59,6 +62,10 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING="utf-8"
 
-RUN pip install -U pip \
-    && pip install numpy scikit-learn pandas jupyter jupyterlab ipython requests requests_html \
-       Flask gensim gunicorn mojimoji matplotlib falcon mecab-python3 tqdm
+COPY nlp-jp/requirements.txt /tmp/
+RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
+
+# install PyTorch
+ARG pytorch_url="https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.whl"
+RUN pip install ${pytorch_url} torchvision torchtext
+
