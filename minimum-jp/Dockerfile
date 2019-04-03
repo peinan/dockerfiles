@@ -48,5 +48,4 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING="utf-8"
 
-RUN pip install -U pip \
-    && pip install setuptools numpy ipython requests requests_html Flask gunicorn tqdm
+RUN pip install -U pip setuptools && pip install -r minimum-jp/requirements.txt
