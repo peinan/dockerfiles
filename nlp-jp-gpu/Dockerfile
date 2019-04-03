@@ -1,10 +1,7 @@
-# stable version
-
 # ensure the cuda image version are same with the cuda driver version
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
 
 MAINTAINER Peinan
-COPY nlp-jp-gpu/requirements.txt /tmp/
 
 # 必要なパッケージインストール
 RUN apt-get update -y \
@@ -66,6 +63,7 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING "utf-8"
 
+COPY nlp-jp-gpu/requirements.txt /tmp/
 RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
 
 # install PyTorch
