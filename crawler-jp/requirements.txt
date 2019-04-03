@@ -1,0 +1,23 @@
+# general packages
+pip
+setuptools
+
+# for scraping
+requests
+requests_html
+selenium
+beautifulsoup4
+scrapy
+html5lib
+lxml
+feedparser
+
+# web server
+Flask
+fastapi
+gunicorn
+uvicorn
+
+# utility tools
+ipython
+tqdm
