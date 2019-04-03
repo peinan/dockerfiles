@@ -46,7 +46,7 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && ln -s /usr/local/bin/python3.6 /usr/local/bin/python \
     && ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
 
-ENV PYTHONIOENCODING "utf-8"
+ENV PYTHONIOENCODING="utf-8"
 
 RUN pip install -U pip \
     && pip install setuptools numpy ipython requests requests_html Flask gunicorn tqdm
