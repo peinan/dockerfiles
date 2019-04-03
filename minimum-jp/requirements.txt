@@ -1,0 +1,16 @@
+# general packages
+pip
+setuptools
+
+# web servers
+Flask
+gunicorn
+fastapi
+uvicorn
+
+# utility tools
+ipython
+tqdm
+numpy
+requests
+
