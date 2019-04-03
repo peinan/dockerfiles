@@ -65,7 +65,7 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING "utf-8"
 
-ADD ./requirements.txt /tmp
+ADD --from=0 /nlp-jp-gpu/requirements.txt /tmp
 RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
 
 # install PyTorch
