@@ -1,9 +1,11 @@
 # Dockerfiles
 
-- minimum-jp: https://hub.docker.com/r/peinan/minimum-jp
-- crawler-jp: https://hub.docker.com/r/peinan/crawler-jp
-- nlp-jp: https://hub.docker.com/r/peinan/nlp-jp
-- nlp-jp-gpu: https://hub.docker.com/r/peinan/nlp-jp-gpu
+| Image | DockerHub URL |
+| ----- | ------------- |
+| minimum-jp | https://hub.docker.com/r/peinan/minimum-jp |
+| crawler-jp | https://hub.docker.com/r/peinan/crawler-jp |
+| nlp-jp | https://hub.docker.com/r/peinan/nlp-jp |
+| nlp-jp-gpu | https://hub.docker.com/r/peinan/nlp-jp-gpu |
 
 ## How to make a new image
 
