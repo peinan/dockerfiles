@@ -1,10 +1,16 @@
 FROM ubuntu:16.04
 
-MAINTAINER Peinan
+ARG image_name=minimum-jp
+ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/${image_name}/${image_name}
 
-# 必要なパッケージインストール
+
+# Setup Ubuntu environment
+# ------------------------
+
+# Install Ubuntu packages
 RUN apt-get update -y \
-    && apt-get install -y \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
         build-essential \
         libgdbm-dev \
         libc6-dev \
@@ -24,20 +30,22 @@ RUN apt-get update -y \
         wget \
         curl \
         xz-utils \
-        file \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+        file
 
-# 文字化け対策の locale 設定
+# Setup locale
 RUN echo "ja_JP UTF-8" > /etc/locale.gen && locale-gen
 ENV LANG=ja_JP.UTF-8 \
     LANGUAGE=ja_JP:ja \
     LC_ALL=ja_JP.UTF-8 \
     TZ="Asia/Tokyo"
 
-# python3.6 のインストール
+
+# Setup python environment
+# ------------------------
+
+# Install python
 ARG pyver="3.6.8"
-RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
+RUN wget --no-check-certificate https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
     && ./configure \
@@ -48,4 +56,16 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 
 ENV PYTHONIOENCODING="utf-8"
 
-RUN pip install -U pip setuptools && pip install -r minimum-jp/requirements.txt
+# Install requirements
+ADD ${github_url}/requirements.txt /tmp/requirements.txt
+RUN pip install -U pip setuptools \
+    && pip install -r /tmp/requirements.txt \
+    && rm -rf /tmp/requirements.txt
+
+
+# Finishing
+# ---------
+
+RUN ldconfig \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
