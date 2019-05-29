@@ -2,6 +2,7 @@
 # and don't forget adding option `--runtime=nvidia` while running this image
 
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
+ARG image_name=nlp-jp-gpu
 
 
 # Setup Ubuntu environment
@@ -83,6 +84,7 @@ ENV PYTHONIOENCODING "utf-8"
 
 # Install python packages
 COPY requirements.txt /tmp/
+COPY ${image_name}/requirements.txt /tmp/
 RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
 
 # Install PyTorch
@@ -103,5 +105,6 @@ RUN rm -rf ${jroot} \
 
 # Install jupyterlab's extensions
 COPY install_jupyterlab_extensions.sh /tmp/
+COPY ${image_name}/install_jupyterlab_extensions.sh /tmp/
 RUN /tmp/install_jupyterlab_extensions.sh \
     && rm -f /tmp/install_jupyterlab_extensions.sh
