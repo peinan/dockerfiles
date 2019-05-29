@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+
+  jupyter:
+    image: peinan/nlp-jp-gpu
+    user: root
+    ports:
+      - "8888:8888"
+      - "6006:6006"
+    volumes:
+      - ${HOME}:/user
+    working_dir: /user
+    environment:
+      GRANT_SUDO: 'yes'
+    restart: always
+    command: jupyter lab
+
