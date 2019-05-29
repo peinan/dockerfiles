@@ -1,5 +1,8 @@
 FROM ubuntu:16.04
 
+ARG image_name=minimum-jp
+ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/${image_name}/${image_name}
+
 
 # Setup Ubuntu environment
 # ------------------------
@@ -27,9 +30,7 @@ RUN apt-get update -y \
         wget \
         curl \
         xz-utils \
-        file \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+        file
 
 # Setup locale
 RUN echo "ja_JP UTF-8" > /etc/locale.gen && locale-gen
@@ -56,7 +57,15 @@ RUN wget --no-check-certificate https://www.python.org/ftp/python/${pyver}/Pytho
 ENV PYTHONIOENCODING="utf-8"
 
 # Install requirements
-ARG requirements_url=https://raw.githubusercontent.com/peinan/dockerfiles/minimum-jp/minimum-jp/requirements.txt
-ADD  ${requirements_url} /tmp/requirements.txt
-RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
+ADD ${github_url}/requirements.txt /tmp/requirements.txt
+RUN pip install -U pip setuptools \
+    && pip install -r /tmp/requirements.txt \
+    && rm -rf /tmp/requirements.txt
 
+
+# Finishing
+# ---------
+
+RUN ldconfig \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
