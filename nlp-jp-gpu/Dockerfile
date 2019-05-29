@@ -104,7 +104,7 @@ RUN rm -rf ${jroot} \
 # Install jupyterlab's extensions
 ARG script_name=install_jupyterlab_extensions.sh
 ADD --chown=root:root ${github_url}/${script_name} /tmp/${script_name}
-RUN /tmp/${script_name} \
+RUN /bin/bash /tmp/${script_name} \
     && rm -f /tmp/${script_name}
 
 
