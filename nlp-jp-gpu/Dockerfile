@@ -2,7 +2,9 @@
 # and don't forget adding option `--runtime=nvidia` while running this image
 
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
+
 ARG image_name=nlp-jp-gpu
+ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/${image_name}/${image_name}
 
 
 # Setup Ubuntu environment
@@ -62,16 +64,13 @@ ARG nodever="12"
 RUN curl -sL https://deb.nodesource.com/setup_${nodever}.x | sudo -E bash - \
     && apt-get install -y --no-install-recommends nodejs
 
-# Clean caches
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
 
 # Setup python environment
 # ------------------------
 
 # Install python
 ARG pyver="3.6.8"
-RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
+RUN wget --no-check-certificate https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
     && ./configure \
@@ -83,16 +82,15 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 ENV PYTHONIOENCODING "utf-8"
 
 # Install python packages
-ARG requirements_url="https://raw.githubusercontent.com/peinan/dockerfiles/nlp-jp-gpu/nlp-jp-gpu/Dockerfile"
-ADD ${requirements_url} /tmp/
-RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
+ADD ${github_url}/requirements.txt /tmp/requirements.txt
+RUN pip install -U pip setuptools \
+    && pip install -r /tmp/requirements.txt \
+    && rm -rf /tmp/requirements.txt
 
 # Install PyTorch
 ARG pytorch_url="https://download.pytorch.org/whl/cu100/torch-1.1.0-cp36-cp36m-linux_x86_64.whl"
 ARG torchvision_url="https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp36-cp36m-linux_x86_64.whl"
 RUN pip install ${pytorch_url} ${torchvision_url} torchtext
-
-RUN ldconfig
 
 
 # Setup jupyterlab
@@ -104,7 +102,15 @@ RUN rm -rf ${jroot} \
     && git clone https://github.com/peinan/.jupyter ${jroot}
 
 # Install jupyterlab's extensions
-ARG script_url="https://raw.githubusercontent.com/peinan/dockerfiles/nlp-jp-gpu/nlp-jp-gpu/install_jupyterlab_extensions.sh"
-ADD ${script_url} /tmp/
-RUN /tmp/install_jupyterlab_extensions.sh \
-    && rm -f /tmp/install_jupyterlab_extensions.sh
+ARG script_name=install_jupyterlab_extensions.sh
+ADD ${github_url}/${script_name} /tmp/${script_name}
+RUN /tmp/${script_name} \
+    && rm -f /tmp/${script_name}
+
+
+# Finishing
+# ---------
+
+RUN ldconfig \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
