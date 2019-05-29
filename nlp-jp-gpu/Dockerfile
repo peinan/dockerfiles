@@ -83,8 +83,8 @@ RUN wget https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
 ENV PYTHONIOENCODING "utf-8"
 
 # Install python packages
-COPY requirements.txt /tmp/
-COPY ${image_name}/requirements.txt /tmp/
+ARG requirements_url="https://raw.githubusercontent.com/peinan/dockerfiles/nlp-jp-gpu/nlp-jp-gpu/Dockerfile"
+ADD ${requirements_url} /tmp/
 RUN pip install -U pip setuptools && pip install -r /tmp/requirements.txt
 
 # Install PyTorch
@@ -104,7 +104,7 @@ RUN rm -rf ${jroot} \
     && git clone https://github.com/peinan/.jupyter ${jroot}
 
 # Install jupyterlab's extensions
-COPY install_jupyterlab_extensions.sh /tmp/
-COPY ${image_name}/install_jupyterlab_extensions.sh /tmp/
+ARG script_url="https://raw.githubusercontent.com/peinan/dockerfiles/nlp-jp-gpu/nlp-jp-gpu/install_jupyterlab_extensions.sh"
+ADD ${script_url} /tmp/
 RUN /tmp/install_jupyterlab_extensions.sh \
     && rm -f /tmp/install_jupyterlab_extensions.sh
