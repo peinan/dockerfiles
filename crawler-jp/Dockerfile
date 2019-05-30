@@ -43,7 +43,8 @@ RUN apt-get update -y \
         libappindicator3-1 \
         libatk-bridge2.0-0 \
         libatspi2.0-0 \
-        libgtk-3-0
+        libgtk-3-0 \
+        libxtst6
 
 
 # Setup locale
