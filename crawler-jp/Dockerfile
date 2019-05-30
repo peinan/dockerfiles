@@ -38,7 +38,13 @@ RUN apt-get update -y \
         wget \
         curl \
         xz-utils \
-        file
+        file \
+        ca-certificates \
+        libappindicator3-1 \
+        libatk-bridge2.0-0 \
+        libatspi2.0-0 \
+        libgtk-3-0
+
 
 # Setup locale
 RUN echo "ja_JP UTF-8" > /etc/locale.gen && locale-gen
@@ -54,7 +60,7 @@ ENV LANG=ja_JP.UTF-8 \
 # install chromedriver for selenium
 # NOTE: check the chromedriver version are the latest at 
 #       https://sites.google.com/a/chromium.org/chromedriver/downloads
-ARG cdver="75.0.3770.8"
+ARG cdver="74.0.3729.6"
 RUN wget --no-check-certificate https://chromedriver.storage.googleapis.com/${cdver}/chromedriver_linux64.zip \
     && unzip chromedriver_linux64.zip \
     && mv chromedriver /usr/local/bin/ \
