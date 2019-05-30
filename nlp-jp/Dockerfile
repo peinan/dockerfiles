@@ -56,6 +56,11 @@ RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp
     && /tmp/neologd/bin/install-mecab-ipadic-neologd -n -u -y \
     && rm -rf /tmp/neologd
 
+# NodeJS
+ARG nodever="12"
+RUN curl -sL https://deb.nodesource.com/setup_${nodever}.x | sudo -E bash - \
+    && apt-get install -y --no-install-recommends nodejs
+
 
 # Setup python environment
 # ------------------------
