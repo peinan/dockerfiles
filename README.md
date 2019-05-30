@@ -1,11 +1,11 @@
 # Dockerfiles
 
-| Image Nmae | Features |
-| ---------- | -------- |
-| minimum-jp [🔗](https://hub.docker.com/r/peinan/minimum-jp) | The minimum setup that only includes some basical packages and Python 3.6 |
-| crawler-jp [🔗](https://hub.docker.com/r/peinan/crawler-jp) | A setup for the crawling use that inlcudes selenium |
-| nlp-jp [🔗](https://hub.docker.com/r/peinan/nlp-jp) | A basical setup for NLP. It includes mecab+neologd and some other Python packages |
-| nlp-jp-gpu [🔗](https://hub.docker.com/r/peinan/nlp-jp-gpu) | A GPU-ready setup for NLP. It assumes a heavy use, so the image size is very large (approx 10 GB) |
+|     | Image Nmae | Build Status | Features |
+| --- | ---------- | ------------ | -------- |
+| [🔗](https://hub.docker.com/r/peinan/minimum-jp) | minimum-jp | ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/peinan/minimum-jp.svg?logo=docker&style=flat-square) | The minimum setup that only includes some basical packages and Python 3.6 |
+| [🔗](https://hub.docker.com/r/peinan/crawler-jp) | crawler-jp | ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/peinan/crawler-jp.svg?logo=docker&style=flat-square) | A setup for the crawling use that inlcudes selenium |
+| [🔗](https://hub.docker.com/r/peinan/nlp-jp) | nlp-jp | ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/peinan/nlp-jp.svg?logo=docker&style=flat-square) | A basical setup for NLP. It includes mecab+neologd and some other Python packages |
+| [🔗](https://hub.docker.com/r/peinan/nlp-jp-gpu) | nlp-jp-gpu | ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/peinan/nlp-jp-gpu.svg?logo=docker&style=flat-square) | A GPU-ready setup for NLP. It assumes a heavy use, so the image size is very large (approx 10 GB) |
 
 ### Common settings
 
