@@ -1,17 +1,19 @@
-version: "3.7"
+version: "2.3"
 services:
-
   jupyter:
-    image: peinan/nlp-jp-gpu
+    image: peinan/nlp-jp-gpu:latest
     user: root
     ports:
-      - "8888:8888"
+      - "8088:8888"
       - "6006:6006"
     volumes:
       - ${HOME}:/user
     working_dir: /user
+    runtime: nvidia
     environment:
-      GRANT_SUDO: 'yes'
+      - GRANT_SUDO=yes
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     restart: always
     command: jupyter lab
 

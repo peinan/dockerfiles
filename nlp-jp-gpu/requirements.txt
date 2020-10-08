@@ -7,7 +7,7 @@ numpy
 scipy
 scikit-learn
 lightgbm
-tensorflow-gpu
+torch
 
 # NLP
 gensim
@@ -30,7 +30,9 @@ uvicorn
 ipython
 jupyter
 jupyterlab
+plotly
 requests
 requests_html
 tqdm
+ipywidgets
 git+https://github.com/peinan/peinan-utils-py
