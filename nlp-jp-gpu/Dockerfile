@@ -4,7 +4,7 @@
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
 
 ARG image_name=nlp-jp-gpu
-ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/${image_name}/${image_name}
+ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${image_name}
 
 
 # Setup Ubuntu environment
