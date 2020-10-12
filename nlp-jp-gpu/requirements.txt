@@ -1,13 +1,8 @@
-# general packages
-pip
-setuptools
-
 # scientific computation
 numpy
 scipy
 scikit-learn
 lightgbm
-torch==1.5.0
 
 # NLP
 gensim
@@ -21,7 +16,6 @@ matplotlib
 plotly
 
 # web servers
-Flask
 fastapi
 gunicorn
 uvicorn
@@ -34,3 +28,4 @@ requests
 requests_html
 tqdm
 ipywidgets
+git+https://github.com/peinan/peinan-utils-py
