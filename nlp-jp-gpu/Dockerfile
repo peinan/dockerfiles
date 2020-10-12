@@ -1,7 +1,8 @@
 # ensure the cuda image version are same with the cuda driver version
 # and don't forget adding option `--runtime=nvidia` while running this image
 
-FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
+# FYI: https://hub.docker.com/r/nvidia/cuda/tags?page=1&name=10.1-cudnn7-devel-ubuntu
 
 ARG image_name=nlp-jp-gpu
 ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${image_name}
@@ -69,7 +70,7 @@ RUN curl -sL https://deb.nodesource.com/setup_${nodever}.x | sudo -E bash - \
 # ------------------------
 
 # Install python
-ARG pyver="3.6.8"
+ARG pyver="3.8.6"
 RUN wget --no-check-certificate https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
@@ -86,11 +87,6 @@ ADD ${github_url}/requirements.txt /tmp/requirements.txt
 RUN pip install -U pip setuptools \
     && pip install -r /tmp/requirements.txt \
     && rm -rf /tmp/requirements.txt
-
-# Install PyTorch
-ARG pytorch_url="https://download.pytorch.org/whl/cu100/torch-1.1.0-cp36-cp36m-linux_x86_64.whl"
-ARG torchvision_url="https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp36-cp36m-linux_x86_64.whl"
-RUN pip install ${pytorch_url} ${torchvision_url} torchtext
 
 
 # Setup jupyterlab
