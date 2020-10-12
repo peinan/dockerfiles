@@ -4,12 +4,19 @@
 FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 # FYI: https://hub.docker.com/r/nvidia/cuda/tags?page=1&name=10.1-cudnn7-devel-ubuntu
 
+# Use bash instead of sh
+SHELL ["/bin/bash", "-c"]
+
 ARG image_name=nlp-jp-gpu
 ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${image_name}
 
 
 # Setup Ubuntu environment
 # ------------------------
+
+# Avoid interrupt of tz config
+# ref: https://qiita.com/yagince/items/deba267f789604643bab
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install Ubuntu packages
 RUN apt-get update -y \
@@ -32,6 +39,7 @@ RUN apt-get update -y \
         libreadline-gplv2-dev \
         libncursesw5-dev \
         libsqlite3-dev \
+        libffi-dev \
         zlib1g-dev \
         ca-certificates \
         software-properties-common \
@@ -76,14 +84,14 @@ RUN wget --no-check-certificate https://www.python.org/ftp/python/${pyver}/Pytho
     && cd Python-${pyver} \
     && ./configure \
     && make altinstall \
-    && rm -rf /Python-${pyver} /Python-${pyver}.tgz \
-    && ln -s /usr/local/bin/python3.6 /usr/local/bin/python \
-    && ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
+    && rm -rf /Python-${pyver} /Python-${pyver}.tgz
+RUN ln -s /usr/local/bin/python${pyver:0:3} /usr/local/bin/python \
+    && ln -s /usr/local/bin/pip${pyver:0:3} /usr/local/bin/pip
 
 ENV PYTHONIOENCODING "utf-8"
 
 # Install python packages
-ADD ${github_url}/requirements.txt /tmp/requirements.txt
+RUN wget --no-check-certificate ${github_url}/requirements.txt -O /tmp/requirements.txt
 RUN pip install -U pip setuptools \
     && pip install -r /tmp/requirements.txt \
     && rm -rf /tmp/requirements.txt
@@ -99,7 +107,8 @@ RUN rm -rf ${jroot} \
 
 # Install jupyterlab's extensions
 ARG script_name=install_jupyterlab_extensions.sh
-ADD --chown=root:root ${github_url}/${script_name} /tmp/${script_name}
+RUN wget --no-check-certificate ${github_url}/${script_name} -O /tmp/${script_name}
+RUN chown root /tmp/${script_name}
 RUN /bin/bash /tmp/${script_name} \
     && rm -f /tmp/${script_name}
 

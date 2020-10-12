@@ -13,7 +13,6 @@ torch==1.5.0
 gensim
 mojimoji
 spacy
-nltk
 mecab-python3
 
 # data analysis
@@ -35,4 +34,3 @@ requests
 requests_html
 tqdm
 ipywidgets
-git+https://github.com/peinan/peinan-utils-py
