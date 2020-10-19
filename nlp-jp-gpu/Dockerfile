@@ -1,7 +1,11 @@
 # ensure the cuda image version are same with the cuda driver version
 # and don't forget adding option `--runtime=nvidia` while running this image
 
-FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
+# FYI: https://hub.docker.com/r/nvidia/cuda/tags?page=1&name=10.1-cudnn7-devel-ubuntu
+
+# Use bash instead of sh
+SHELL ["/bin/bash", "-c"]
 
 ARG image_name=nlp-jp-gpu
 ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${image_name}
@@ -9,6 +13,10 @@ ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${ima
 
 # Setup Ubuntu environment
 # ------------------------
+
+# Avoid interrupt of tz config
+# ref: https://qiita.com/yagince/items/deba267f789604643bab
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install Ubuntu packages
 RUN apt-get update -y \
@@ -31,6 +39,7 @@ RUN apt-get update -y \
         libreadline-gplv2-dev \
         libncursesw5-dev \
         libsqlite3-dev \
+        libffi-dev \
         zlib1g-dev \
         ca-certificates \
         software-properties-common \
@@ -69,28 +78,27 @@ RUN curl -sL https://deb.nodesource.com/setup_${nodever}.x | sudo -E bash - \
 # ------------------------
 
 # Install python
-ARG pyver="3.6.8"
+ARG pyver="3.8.6"
 RUN wget --no-check-certificate https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
     && tar zxf Python-${pyver}.tgz \
     && cd Python-${pyver} \
     && ./configure \
     && make altinstall \
-    && rm -rf /Python-${pyver} /Python-${pyver}.tgz \
-    && ln -s /usr/local/bin/python3.6 /usr/local/bin/python \
-    && ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
+    && rm -rf /Python-${pyver} /Python-${pyver}.tgz
+RUN ln -s /usr/local/bin/python${pyver:0:3} /usr/local/bin/python \
+    && ln -s /usr/local/bin/pip${pyver:0:3} /usr/local/bin/pip
 
 ENV PYTHONIOENCODING "utf-8"
 
 # Install python packages
-ADD ${github_url}/requirements.txt /tmp/requirements.txt
+RUN wget --no-check-certificate ${github_url}/requirements.txt -O /tmp/requirements.txt
 RUN pip install -U pip setuptools \
     && pip install -r /tmp/requirements.txt \
     && rm -rf /tmp/requirements.txt
 
 # Install PyTorch
-ARG pytorch_url="https://download.pytorch.org/whl/cu100/torch-1.1.0-cp36-cp36m-linux_x86_64.whl"
-ARG torchvision_url="https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp36-cp36m-linux_x86_64.whl"
-RUN pip install ${pytorch_url} ${torchvision_url} torchtext
+# Be careful with the CUDA version. Reference the official page: https://pytorch.org/get-started/previous-versions/
+RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 
 
 # Setup jupyterlab
@@ -103,7 +111,8 @@ RUN rm -rf ${jroot} \
 
 # Install jupyterlab's extensions
 ARG script_name=install_jupyterlab_extensions.sh
-ADD --chown=root:root ${github_url}/${script_name} /tmp/${script_name}
+RUN wget --no-check-certificate ${github_url}/${script_name} -O /tmp/${script_name}
+RUN chown root /tmp/${script_name}
 RUN /bin/bash /tmp/${script_name} \
     && rm -f /tmp/${script_name}
 

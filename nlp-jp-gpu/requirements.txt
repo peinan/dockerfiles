@@ -1,27 +1,21 @@
-# general packages
-pip
-setuptools
-
 # scientific computation
 numpy
 scipy
 scikit-learn
 lightgbm
-torch
 
 # NLP
 gensim
 mojimoji
 spacy
-nltk
 mecab-python3
 
 # data analysis
 pandas
 matplotlib
+plotly
 
 # web servers
-Flask
 fastapi
 gunicorn
 uvicorn
@@ -30,7 +24,6 @@ uvicorn
 ipython
 jupyter
 jupyterlab
-plotly
 requests
 requests_html
 tqdm
