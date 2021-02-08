@@ -12,7 +12,7 @@ ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${ima
 
 # Versions
 ARG NODE_VER="12"
-ARG PYTHON_VER="3.8.6"
+ARG PYTHON_VER="3.8.7"
 ARG TORCH_VER="1.5.1"
 ARG TORCH_VISION_VER="0.6.1"
 ARG TORCH_CUDA_VER="cu101"
