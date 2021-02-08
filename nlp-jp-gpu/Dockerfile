@@ -10,6 +10,13 @@ SHELL ["/bin/bash", "-c"]
 ARG image_name=nlp-jp-gpu
 ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${image_name}
 
+# Versions
+ARG NODE_VER="12"
+ARG PYTHON_VER="3.8.6"
+ARG TORCH_VER="1.5.1"
+ARG TORCH_VISION_VER="0.6.1"
+ARG TORCH_CUDA_VER="cu101"
+
 
 # Setup Ubuntu environment
 # ------------------------
@@ -69,8 +76,7 @@ RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp
     && rm -rf /tmp/neologd
 
 # NodeJS
-ARG nodever="12"
-RUN curl -sL https://deb.nodesource.com/setup_${nodever}.x | sudo -E bash - \
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VER}.x | sudo -E bash - \
     && apt-get install -y --no-install-recommends nodejs
 
 
@@ -78,15 +84,14 @@ RUN curl -sL https://deb.nodesource.com/setup_${nodever}.x | sudo -E bash - \
 # ------------------------
 
 # Install python
-ARG pyver="3.8.6"
-RUN wget --no-check-certificate https://www.python.org/ftp/python/${pyver}/Python-${pyver}.tgz \
-    && tar zxf Python-${pyver}.tgz \
-    && cd Python-${pyver} \
+RUN wget --no-check-certificate https://www.python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tgz \
+    && tar zxf Python-${PYTHON_VER}.tgz \
+    && cd Python-${PYTHON_VER} \
     && ./configure \
     && make altinstall \
-    && rm -rf /Python-${pyver} /Python-${pyver}.tgz
-RUN ln -s /usr/local/bin/python${pyver:0:3} /usr/local/bin/python \
-    && ln -s /usr/local/bin/pip${pyver:0:3} /usr/local/bin/pip
+    && rm -rf /Python-${PYTHON_VER} /Python-${PYTHON_VER}.tgz
+RUN ln -s /usr/local/bin/python${PYTHON_VER:0:3} /usr/local/bin/python \
+    && ln -s /usr/local/bin/pip${PYTHON_VER:0:3} /usr/local/bin/pip
 
 ENV PYTHONIOENCODING "utf-8"
 
@@ -98,7 +103,7 @@ RUN pip install -U pip setuptools \
 
 # Install PyTorch
 # Be careful with the CUDA version. Reference the official page: https://pytorch.org/get-started/previous-versions/
-RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip install torch==${TORCH_VER}+${TORCH_CUDA_VER} torchvision==${TORCH_VISION_VER}+${TORCH_CUDA_VER} -f https://download.pytorch.org/whl/torch_stable.html
 
 
 # Setup jupyterlab
