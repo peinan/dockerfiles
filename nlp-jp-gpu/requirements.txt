@@ -21,11 +21,12 @@ gunicorn
 uvicorn
 
 # utility tools
+jupyterlab>=3.0.0,<3.1.0
 ipython
 jupyter
-jupyterlab
 requests
 requests_html
 tqdm
-ipywidgets
+ipywidgets>=7.5
 git+https://github.com/peinan/peinan-utils-py
+git+https://github.com/peinan/jupyterlab-execute-time
