@@ -10,6 +10,7 @@ services:
       - ${HOME}:/user
     working_dir: /user
     runtime: nvidia
+    ipc: host
     environment:
       - GRANT_SUDO=yes
       - NVIDIA_VISIBLE_DEVICES=all
