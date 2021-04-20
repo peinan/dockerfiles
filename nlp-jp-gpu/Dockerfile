@@ -12,7 +12,7 @@ ARG github_url=https://raw.githubusercontent.com/peinan/dockerfiles/master/${ima
 
 # Versions
 ARG NODE_VER="12"
-ARG PYTHON_VER="3.8.7"
+ARG PYTHON_VER="3.8.9"
 ARG TORCH_VER="1.5.1"
 ARG TORCH_VISION_VER="0.6.1"
 ARG TORCH_CUDA_VER="cu101"
@@ -47,6 +47,7 @@ RUN apt-get update -y \
         libncursesw5-dev \
         libsqlite3-dev \
         libffi-dev \
+        liblzma-dev \
         zlib1g-dev \
         ca-certificates \
         software-properties-common \
@@ -103,7 +104,7 @@ RUN pip install -U pip setuptools \
 
 # Install PyTorch
 # Be careful with the CUDA version. Reference the official page: https://pytorch.org/get-started/previous-versions/
-RUN pip install torch==${TORCH_VER}+${TORCH_CUDA_VER} torchvision==${TORCH_VISION_VER}+${TORCH_CUDA_VER} -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 
 
 # Setup jupyterlab
